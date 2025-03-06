@@ -1,10 +1,8 @@
 // SPDX-License-Identifier: UNLICENSED
-pragma solidity 0.8.24;
+pragma solidity 0.8.28;
 
-contract Level0 {
-    uint8 constant ANSWER = 42;
-
+contract L0 {
     function solution() external pure returns (uint8) {
-        return ANSWER;
+        return 42;
     }
 }
