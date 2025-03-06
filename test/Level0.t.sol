@@ -8,7 +8,7 @@ import "../src/CTF.sol";
 
 contract CTFTest is Test {
     CTF public ctfContract;
-    L0 public lv0 = L0(0x62ed716637D8ccf9EDa73fb039C33D9159062909);
+    L0 public lv0;
     address public user = vm.envAddress("USER_ADDRESS");
     uint8 public levelNumber = 0;
 
@@ -22,7 +22,7 @@ contract CTFTest is Test {
 
         ctfContract = CTF(0x47bF301bB9B5Ec3fFb84448a95b3573b305456Db);
 
-        // lv0 = new L0();
+        lv0 = new L0();
 
         bool isWhitelisted = ctfContract.whitelist(user);
         bool canSubmitSolution = ctfContract.canSubmit();
