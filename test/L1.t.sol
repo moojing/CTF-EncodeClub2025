@@ -4,33 +4,14 @@ pragma solidity ^0.8.28;
 import "forge-std/Test.sol";
 import "forge-std/console.sol";
 import "../src/L1.sol";
-import "../src/CTF.sol";
+import "./BaseCTF.sol";
 
-contract CTFTest is Test {
-    CTF public ctfContract;
+contract L1Test is BaseCTFTest {
     Level1Answer public lv1;
-    address public user = vm.envAddress("USER_ADDRESS");
-    uint8 public levelNumber = 1;
 
     function setUp() public {
-        string memory rpc_url = vm.envString("RPC_URL");
-        console.log("rpc_url:", rpc_url);
-
-        vm.createSelectFork(rpc_url);
-        uint256 latestBlockNumber = block.number;
-        console.log("latestBlockNumber:", latestBlockNumber);
-
-        ctfContract = CTF(0x47bF301bB9B5Ec3fFb84448a95b3573b305456Db);
-
+        setUpCTF(1);
         lv1 = new Level1Answer();
-
-        bool isWhitelisted = ctfContract.whitelist(user);
-        bool canSubmitSolution = ctfContract.canSubmit();
-        address levelAddress = ctfContract.levels(levelNumber);
-
-        console.log("User whitelisted:", isWhitelisted);
-        console.log("Submissions open:", canSubmitSolution);
-        console.log("Level address:", levelAddress);
     }
 
     // function testMatrixAddition() public {
@@ -53,18 +34,16 @@ contract CTFTest is Test {
 
     function testSubmitSolution() public {
         vm.startPrank(user);
-        uint8 scoreBefore = ctfContract.scores(user, levelNumber);
-        uint256 gasUsedBefore = ctfContract.gasUsed(user, levelNumber);
 
+        (uint256 scoreBefore, uint256 gasUsedBefore) = getScoreAndGas();
         console.log("Score before:", scoreBefore);
         console.log("Gas used before:", gasUsedBefore);
 
         ctfContract.submitSolution(levelNumber, address(lv1));
 
-        uint8 scoreAfter = ctfContract.scores(user, levelNumber);
-        uint256 gasUsedAfter = ctfContract.gasUsed(user, levelNumber);
-
+        (uint256 scoreAfter, uint256 gasUsedAfter) = getScoreAndGas();
         console.log("Score after:", scoreAfter);
         console.log("Gas used after:", gasUsedAfter);
+        vm.stopPrank();
     }
 }
