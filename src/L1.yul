@@ -1,35 +1,24 @@
-object "MatrixAddition" {
+object "Level1Answer" {
   code {
-    // Deployment code
     datacopy(0, dataoffset("runtime"), datasize("runtime"))
     return(0, datasize("runtime"))
   }
   
   object "runtime" {
     code {
-      // Initialize counter to 0
-      let i := 0
+      // 直接使用 0x00 而不是 0x80 作為結果存儲位置，這樣可以避免32字節的偏移量
+      let result := 0x00
       
-      // Loop start (using a for-loop style)
-      for {} lt(i, 6) { i := add(i, 1) } {
-        // Calculate offset: 32 * i + 64 (base offset)
-        let offset := add(mul(0x20, i), 0x40)
-        
-        // Read from calldata x[i/2][i%2]
-        let xValue := calldataload(offset)
-        
-        // Read from calldata y[i/2][i%2]
-        let yValue := calldataload(add(offset, 0xc0))
-        
-        // Add them together
-        let sum := add(xValue, yValue)
-        
-        // Store result
-        mstore(mul(0x20, i), sum)
-      }
+      // 載入所有輸入值並相加
+      mstore(0x00, add(calldataload(4), calldataload(196)))
+      mstore(0x20, add(calldataload(36), calldataload(228)))
+      mstore(0x40, add(calldataload(68), calldataload(260)))
+      mstore(0x60, add(calldataload(100), calldataload(292)))
+      mstore(0x80, add(calldataload(132), calldataload(324)))
+      mstore(0xa0, add(calldataload(164), calldataload(356)))
       
-      // Return result
-      return(0, 0xc0)
+      // 直接返回，不使用變數
+      return(0x00, 0xc0)
     }
   }
 }
