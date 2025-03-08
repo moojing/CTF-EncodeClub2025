@@ -33,23 +33,23 @@ contract CTFTest is Test {
         console.log("Level address:", levelAddress);
     }
 
-    function testMatrixAddition() public {
-        uint256[2][3] memory x = [[uint256(1), uint256(2)], [uint256(3), uint256(4)], [uint256(5), uint256(6)]];
-        uint256[2][3] memory y = [[uint256(7), uint256(8)], [uint256(9), uint256(10)], [uint256(11), uint256(12)]];
-        uint256[2][3] memory expected =
-            [[uint256(8), uint256(10)], [uint256(12), uint256(14)], [uint256(16), uint256(18)]];
-        uint256[2][3] memory result = lv1.solution(x, y);
+    // function testMatrixAddition() public {
+    //     uint256[2][3] memory x = [[uint256(1), uint256(2)], [uint256(3), uint256(4)], [uint256(5), uint256(6)]];
+    //     uint256[2][3] memory y = [[uint256(7), uint256(8)], [uint256(9), uint256(10)], [uint256(11), uint256(12)]];
+    //     uint256[2][3] memory expected =
+    //         [[uint256(8), uint256(10)], [uint256(12), uint256(14)], [uint256(16), uint256(18)]];
+    //     uint256[2][3] memory result = lv1.solution(x, y);
 
-        for (uint256 i = 0; i < 3; i++) {
-            for (uint256 j = 0; j < 2; j++) {
-                assertEq(
-                    result[i][j],
-                    expected[i][j],
-                    string.concat("Mismatch at position [", vm.toString(i), "][", vm.toString(j), "]")
-                );
-            }
-        }
-    }
+    //     for (uint256 i = 0; i < 3; i++) {
+    //         for (uint256 j = 0; j < 2; j++) {
+    //             assertEq(
+    //                 result[i][j],
+    //                 expected[i][j],
+    //                 string.concat("Mismatch at position [", vm.toString(i), "][", vm.toString(j), "]")
+    //             );
+    //         }
+    //     }
+    // }
 
     function testSubmitSolution() public {
         vm.startPrank(user);

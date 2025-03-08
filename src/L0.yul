@@ -6,7 +6,6 @@ object "L0" {
   
   object "runtime" {
     code {
-      // 直接返回 42 (0x2a)
       mstore(0, 0x2a)
       return(0, 32)
     }
