@@ -12,7 +12,7 @@ contract L2Test is BaseCTFTest {
     function setUp() public {
         setUpCTF(2);
 
-        sortingContract = new Level2Answer();
+        sortingContract = Level2Answer(0x325d82c739dE88a3a7Ec7bF0C551085022fe9ee5);
     }
 
     function testSortingRandomArray() public {
