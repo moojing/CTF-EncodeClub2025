@@ -12,24 +12,20 @@ contract L2Test is BaseCTFTest {
     function setUp() public {
         setUpCTF(2);
 
-        sortingContract = Level2Answer(0x325d82c739dE88a3a7Ec7bF0C551085022fe9ee5);
+        sortingContract = new Level2Answer();
     }
 
     function testSortingRandomArray() public {
-        // 建立一個未排序的陣列
         uint256[10] memory unsortedArray = [uint256(42), 17, 99, 5, 63, 27, 1, 75, 33, 50];
 
-        // 獲取排序後的陣列
         uint256[10] memory sortedArray = sortingContract.solution(unsortedArray);
 
-        // 驗證結果是否已排序
         for (uint256 i = 0; i < 9; i++) {
             assertTrue(
                 sortedArray[i] <= sortedArray[i + 1], string.concat("Array not sorted at index ", vm.toString(i))
             );
         }
 
-        // 驗證所有元素都存在（沒有丟失元素）
         bool[10] memory found;
         for (uint256 i = 0; i < 10; i++) {
             bool elementFound = false;

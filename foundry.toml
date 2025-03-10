@@ -5,7 +5,9 @@ libs = ["lib"]
 solc_version = "0.8.28"
 gas_reports = ["*"]
 optimizer = true
-optimizer_runs = 100000
+optimizer_runs = 200000
+via_ir = true
+fs_permissions = [{ access = "read", path = "./src" }]
 
 
 # See more config options https://github.com/foundry-rs/foundry/blob/master/crates/config/README.md#all-options
