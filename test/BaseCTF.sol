@@ -16,7 +16,6 @@ abstract contract BaseCTFTest is Test {
         levelNumber = _levelNumber;
 
         string memory rpc_url = vm.envString("RPC_URL");
-        console.log("rpc_url:", rpc_url);
 
         vm.createSelectFork(rpc_url);
         uint256 latestBlockNumber = block.number;
