@@ -15,6 +15,7 @@ contract L3Test is BaseCTFTest {
     function setUp() public {
         setUpCTF(3);
 
+        // lv3Contract = Level3Answer(0x97278F704cCEE14CbB81d56a2bEbc47d5F7388b7);
         lv3Contract = new Level3Answer();
     }
 
@@ -23,14 +24,14 @@ contract L3Test is BaseCTFTest {
         // Level3Answer level3 = new Level3Answer();
 
         // 測試輸入
-        bytes memory testInput = hex"eb1a01d1c1db5c3dfc";
+        bytes memory testInput = hex"589401f1c92ffb36cf";
 
         // 調用要測試的函數
         (uint16 a, bool b, bytes6 c) = lv3Contract.solution(testInput);
 
-        assertEq(a, 0xeb1a);
-        assertEq(b, true);
-        assertEq(c, hex"d1c1db5c3dfc");
+        assertEq(a, 0x4941);
+        assertEq(b, false);
+        assertEq(c, hex"3974e3eaf5ed");
     }
 
     function testSubmitSolution() public {
