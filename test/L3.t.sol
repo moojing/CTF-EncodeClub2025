@@ -18,26 +18,19 @@ contract L3Test is BaseCTFTest {
         lv3Contract = new Level3Answer();
     }
 
-    function runTest() public {
+    function testSolution() public {
         // 創建要測試的合約
         // Level3Answer level3 = new Level3Answer();
 
         // 測試輸入
-        bytes memory testInput = hex"83fb00d58be7d5c699";
+        bytes memory testInput = hex"eb1a01d1c1db5c3dfc";
 
         // 調用要測試的函數
         (uint16 a, bool b, bytes6 c) = lv3Contract.solution(testInput);
 
-        // 檢查結果是否符合預期
-        bool success = (a == 0) && (b == true) && (c == hex"860000000000");
-
-        // 輸出測試結果
-        emit TestResult(success, success ? "Test passed!" : "Test failed!");
-
-        // 如果測試失敗，輸出實際結果以幫助調試
-        if (!success) {
-            emit ActualResults(a, b, bytes32(c));
-        }
+        assertEq(a, 0xeb1a);
+        assertEq(b, true);
+        assertEq(c, hex"d1c1db5c3dfc");
     }
 
     function testSubmitSolution() public {

@@ -1,28 +1,32 @@
-// interface Isolution3 {
-//     function solution(bytes memory packed) external returns (uint16 a, bool b, bytes6 c);
-// }
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.0;
+
+import "forge-std/console.sol";
 
 contract Level3Answer {
-    function solution(bytes memory packed) public pure returns (uint16 a, bool b, bytes6 c) {
-        require(packed.length >= 9, "Input too short");
+    function solution(bytes memory packed) external pure returns (uint16 a, bool b, bytes6 c) {
+        // Make sure the packed data has enough bytes
+        require(packed.length >= 9, "Packed data too short");
 
-        // 提取 uint16 a (第1-2字節)
-        a = uint16(uint8(packed[0])) * 256 + uint16(uint8(packed[1]));
+        console.logBytes(packed);
+        a = uint16(uint8(packed[0])) << 8 | uint16(uint8(packed[1]));
+        console.log("a:", a);
 
-        // 提取 bool b (第3字節)
+        // Extract bool (next 1 byte)
+        // Any non-zero value is considered true in Solidity
         b = packed[2] != 0;
+        console.log("b:", b);
 
-        // 提取 bytes6 c (從第9字節開始的6字節)
-        bytes memory cBytes = new bytes(6);
+        // Extract bytes6 (next 6 bytes)
+        // We need to extract 6 bytes starting from the 4th position (index 3)
+        bytes memory temp = new bytes(6);
         for (uint256 i = 0; i < 6; i++) {
-            // 從 packed[8+i] 讀取，對應於 "add(ptr, 6)" 在 assembly 中的位置
-            if (8 + i < packed.length) {
-                cBytes[i] = packed[8 + i];
-            }
+            temp[i] = packed[i + 3];
         }
 
+        // Convert the temporary bytes to bytes6
         assembly {
-            c := mload(add(cBytes, 32))
+            c := mload(add(temp, 32))
         }
     }
 }

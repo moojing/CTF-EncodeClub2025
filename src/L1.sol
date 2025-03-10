@@ -2,11 +2,7 @@
 pragma solidity ^0.8.24;
 
 contract Level1Answer {
-    function solution(uint256[2][3] calldata x, uint256[2][3] calldata y)
-        external
-        pure
-        returns (uint256[2][3] memory)
-    {
+    function solution() external pure returns (uint256[2][3] memory) {
         assembly {
             let result := mload(0x40)
             mstore(0x40, add(result, 192))
