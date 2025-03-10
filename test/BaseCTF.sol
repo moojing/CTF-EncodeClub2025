@@ -8,7 +8,7 @@ import "../src/CTF.sol";
 
 abstract contract BaseCTFTest is Test {
     CTF public ctfContract;
-    address public user = address(0x8865d9736Ad52c6cdBbEA9bCd376108284CFd0e4);
+    address public user = address(vm.envAddress("USER_ADDRESS"));
     uint8 public levelNumber;
     address public levelAddress;
 
