@@ -4,29 +4,27 @@ pragma solidity ^0.8.0;
 import "forge-std/console.sol";
 
 contract Level3Answer {
-    function solution(bytes memory packed) external pure returns (uint16 a, bool b, bytes6 c) {
+    function solution(bytes calldata packed) external pure returns (uint16 a, bool b, bytes6 c) {
         // Make sure the packed data has enough bytes
-        require(packed.length >= 9, "Packed data too short");
+        if (packed.length < 9) revert("Packed data too short");
 
-        console.logBytes(packed);
+        // 解析 uint16 (從第一個字節開始)
+        // 注意字節順序：高位在前，低位在後
         a = uint16(uint8(packed[0])) << 8 | uint16(uint8(packed[1]));
-        console.log("a:", a);
 
-        // Extract bool (next 1 byte)
-        // Any non-zero value is considered true in Solidity
+        // 解析 bool (第三個字節)
         b = packed[2] != 0;
-        console.log("b:", b);
 
-        // Extract bytes6 (next 6 bytes)
-        // We need to extract 6 bytes starting from the 4th position (index 3)
-        bytes memory temp = new bytes(6);
-        for (uint256 i = 0; i < 6; i++) {
-            temp[i] = packed[i + 3];
-        }
-
-        // Convert the temporary bytes to bytes6
+        // 解析 bytes6 (後6個字節)
+        uint256 word;
         assembly {
-            c := mload(add(temp, 32))
+            // 加載 calldata 中從偏移 packed.offset + 3 開始的數據
+            word := calldataload(add(packed.offset, 3))
+
+            // 保留前 6 個字節 (48 位)
+            // 這裡不需要 shl+shr，只需要與掩碼相與
+            c := and(word, 0xFFFFFFFFFFFF0000000000000000000000000000000000000000000000000000)
         }
+        console.logBytes(abi.encode(word));
     }
 }
