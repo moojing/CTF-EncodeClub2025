@@ -1,25 +1,24 @@
 // SPDX-License-Identifier: MIT
-import "forge-std/console.sol";
-
+pragma solidity ^0.8.24;
 contract Level5Answer {
     function solution(int256 a, int256 b) external pure returns (int256) {
-        // 計算平均值，避免溢出
         int256 avg = a / 2 + b / 2;
 
-        // 直接計算餘數和，減少布爾運算
-        int256 remainder = (a % 2) + (b % 2);
+        // 使用位運算獲取最低位（奇偶性檢查）
+        int256 remainderA = a & 1;
+        int256 remainderB = b & 1;
 
-        // 簡化條件邏輯
-        if (remainder == 2) {
-            avg += 1; // 兩個正奇數
-        } else if (remainder == -2) {
-            avg -= 1; // 兩個負奇數
-        } else if (remainder == 1) {
-            if (avg >= 0) avg += 1; // 一個正奇數，正平均值向上取整
-        } else if (remainder == -1) {
-            // if (avg < 0) avg -= 1; // 一個負奇數，負平均值向下取整（遠離零）
+        // 處理正數情況
+        unchecked {
+            // 合併所有正數情況到一個條件
+            if (
+                ((remainderA | remainderB) == 1 && avg >= 0) ||
+                (remainderA & remainderB == 1) // 兩個都是奇數
+            ) // 一個奇數且平均值非負
+            {
+                avg += 1;
+            } else if (remainderA == -1 && remainderB == -1) avg -= 1;
         }
-
         return avg;
     }
 }
